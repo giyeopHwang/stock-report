@@ -6,11 +6,11 @@ orbs:
 workflows:
   sample:
     jobs:
-      - build-and-test
-
+      - lint
+      - test
 
 jobs:
-  build-and-test:
+  lint:
     docker:
       - image: cimg/python:3.9.6
     steps:
@@ -18,5 +18,15 @@ jobs:
       - python/install-packages:
           pkg-manager: pip
       - run:
-          name: Run tests
+          name: lint
+          command: pycodestyle .
+  test:
+    docker:
+      - image: cimg/python:3.9.6
+    steps:
+      - checkout
+      - python/install-packages:
+          pkg-manager: pip
+      - run:
+          name: test
           command: pytest
